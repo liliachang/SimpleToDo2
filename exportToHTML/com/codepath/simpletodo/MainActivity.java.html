@@ -1,0 +1,137 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,255); }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+MainActivity.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">com.codepath.simpletodo; 
+ 
+</span><span class="s0">import </span><span class="s1">android.content.Intent; 
+</span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+</span><span class="s0">import </span><span class="s1">android.view.Menu; 
+</span><span class="s0">import </span><span class="s1">android.view.MenuItem; 
+</span><span class="s0">import </span><span class="s1">android.view.View; 
+</span><span class="s0">import </span><span class="s1">android.widget.AdapterView; 
+</span><span class="s0">import </span><span class="s1">android.widget.ArrayAdapter; 
+</span><span class="s0">import </span><span class="s1">android.widget.EditText; 
+</span><span class="s0">import </span><span class="s1">android.widget.ListView; 
+ 
+</span><span class="s0">import </span><span class="s1">org.apache.commons.io.FileUtils; 
+ 
+</span><span class="s0">import </span><span class="s1">java.io.File; 
+</span><span class="s0">import </span><span class="s1">java.io.IOException; 
+</span><span class="s0">import </span><span class="s1">java.util.ArrayList; 
+ 
+</span><span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+    </span><span class="s0">private final int </span><span class="s1">REQUEST_CODE = </span><span class="s2">20</span><span class="s1">; 
+    ArrayList&lt;String&gt; items; 
+    ArrayAdapter&lt;String&gt; itemsAdapter; 
+    ListView lvItems; 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        readItems(); 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+        setContentView(R.layout.activity_main); 
+        lvItems = (ListView)findViewById(R.id.lvItems); 
+        items = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;(); 
+        itemsAdapter = </span><span class="s0">new </span><span class="s1">ArrayAdapter&lt;&gt;(</span><span class="s0">this</span><span class="s1">, android.R.layout.simple_list_item_1, items); 
+        lvItems.setAdapter(itemsAdapter); 
+        setupListViewListener(); 
+        setupEditViewListener(); 
+    } 
+ 
+    </span><span class="s0">private void </span><span class="s1">setupEditViewListener() { 
+        lvItems.setOnItemClickListener( 
+                </span><span class="s0">new </span><span class="s1">AdapterView.OnItemClickListener() { 
+                    @Override 
+                    </span><span class="s0">public void </span><span class="s1">onItemClick(AdapterView&lt;?&gt; parent, View view, </span><span class="s0">int </span><span class="s1">position, </span><span class="s0">long </span><span class="s1">id) { 
+                        launchEditView(position); 
+                    } 
+                } 
+        ); 
+    } 
+    </span><span class="s0">private void </span><span class="s1">setupListViewListener() { 
+        lvItems.setOnItemLongClickListener( 
+                </span><span class="s0">new </span><span class="s1">AdapterView.OnItemLongClickListener() { 
+                    @Override 
+                    </span><span class="s0">public boolean </span><span class="s1">onItemLongClick(AdapterView&lt;?&gt; adapter, View item, </span><span class="s0">int </span><span class="s1">pos, </span><span class="s0">long </span><span class="s1">id) { 
+                        items.remove(pos); 
+                        itemsAdapter.notifyDataSetChanged(); 
+                        writeItems(); 
+                        </span><span class="s0">return true</span><span class="s1">; 
+                    } 
+ 
+                }); 
+    } 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onActivityResult(</span><span class="s0">int </span><span class="s1">request, </span><span class="s0">int </span><span class="s1">result, Intent data) { 
+        </span><span class="s0">if </span><span class="s1">(result == RESULT_OK &amp;&amp; request == REQUEST_CODE) { 
+            String name = data.getExtras().getString(</span><span class="s3">&quot;text&quot;</span><span class="s1">); 
+            </span><span class="s0">int </span><span class="s1">position = data.getExtras().getInt(</span><span class="s3">&quot;position&quot;</span><span class="s1">); 
+            items.set(position, name); 
+            itemsAdapter.notifyDataSetChanged(); 
+            writeItems(); 
+        } 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">onAddItem(View v) { 
+        EditText etNewItem = (EditText) findViewById(R.id.etNewItem); 
+        String itemText = etNewItem.getText().toString(); 
+        itemsAdapter.add(itemText); 
+        etNewItem.setText(</span><span class="s3">&quot;&quot;</span><span class="s1">); 
+        writeItems(); 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">readItems() { 
+        File filesDir = getFilesDir(); 
+        File file = </span><span class="s0">new </span><span class="s1">File(filesDir, </span><span class="s3">&quot;todo.txt&quot;</span><span class="s1">); 
+        </span><span class="s0">try </span><span class="s1">{ 
+            items = </span><span class="s0">new </span><span class="s1">ArrayList&lt;String&gt;(FileUtils.readLines(file)); 
+        } </span><span class="s0">catch </span><span class="s1">(IOException e){ 
+            items = </span><span class="s0">new </span><span class="s1">ArrayList&lt;String&gt;(); 
+        } 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">writeItems() { 
+        File filesDir = getFilesDir(); 
+        File file = </span><span class="s0">new </span><span class="s1">File(filesDir, </span><span class="s3">&quot;todo.txt&quot;</span><span class="s1">); 
+        </span><span class="s0">try </span><span class="s1">{ 
+            FileUtils.writeLines(file, items); 
+        } </span><span class="s0">catch </span><span class="s1">(IOException e){ 
+            e.printStackTrace(); 
+        } 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">launchEditView(</span><span class="s0">int </span><span class="s1">position) { 
+        Intent i = </span><span class="s0">new </span><span class="s1">Intent(MainActivity.</span><span class="s0">this</span><span class="s1">, EditItemActivity.</span><span class="s0">class</span><span class="s1">); 
+        String text = items.get(position); 
+        i.putExtra(</span><span class="s3">&quot;text&quot;</span><span class="s1">, text); 
+        i.putExtra(</span><span class="s3">&quot;location&quot;</span><span class="s1">, position); 
+        startActivityForResult(i, REQUEST_CODE); 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">onSubmit() { 
+        </span><span class="s0">this</span><span class="s1">.finish(); 
+    } 
+ 
+ 
+} 
+</span></pre>
+</body>
+</html>

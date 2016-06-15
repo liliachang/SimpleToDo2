@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>EditItemActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: rgb(0,0,0); font-weight: normal; font-style: normal; }
+.s0 { color: rgb(0,0,128); font-weight: bold; }
+.s1 { color: rgb(0,0,0); }
+.s2 { color: rgb(0,0,255); }
+.s3 { color: rgb(0,128,0); font-weight: bold; }
+</style>
+</head>
+<BODY BGCOLOR="#ffffff">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#C0C0C0" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+EditItemActivity.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">com.codepath.simpletodo; 
+ 
+</span><span class="s0">import </span><span class="s1">android.content.Intent; 
+</span><span class="s0">import </span><span class="s1">android.support.v7.app.AppCompatActivity; 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle; 
+</span><span class="s0">import </span><span class="s1">android.view.View; 
+</span><span class="s0">import </span><span class="s1">android.widget.ArrayAdapter; 
+</span><span class="s0">import </span><span class="s1">android.widget.EditText; 
+ 
+</span><span class="s0">import </span><span class="s1">java.util.ArrayList; 
+ 
+ 
+</span><span class="s0">public class </span><span class="s1">EditItemActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity { 
+    </span><span class="s0">private final int </span><span class="s1">REQUEST_CODE = </span><span class="s2">20</span><span class="s1">; 
+    </span><span class="s0">int </span><span class="s1">position; 
+    ArrayList&lt;String&gt; newItem; 
+    ArrayAdapter&lt;String&gt; newItemsAdapter; 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState); 
+        setContentView(R.layout.activity_edit_item); 
+        String text = getIntent().getStringExtra(</span><span class="s3">&quot;text&quot;</span><span class="s1">); 
+        position = getIntent().getIntExtra(</span><span class="s3">&quot;location&quot;</span><span class="s1">, position); 
+        EditText editText = (EditText) findViewById(R.id.editText); 
+        editText.append(</span><span class="s3">&quot;&quot;</span><span class="s1">); 
+        editText.append(text); 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">onSubmit(View v) { 
+        EditText editText = (EditText) findViewById(R.id.editText); 
+        Intent data = </span><span class="s0">new </span><span class="s1">Intent(); 
+        data.putExtra(</span><span class="s3">&quot;text&quot;</span><span class="s1">, editText.getText().toString()); 
+        data.putExtra(</span><span class="s3">&quot;location&quot;</span><span class="s1">, position); 
+        setResult(RESULT_OK, data); 
+        </span><span class="s0">this</span><span class="s1">.finish(); 
+    } 
+ 
+ 
+} 
+</span></pre>
+</body>
+</html>
