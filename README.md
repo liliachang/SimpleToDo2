@@ -19,10 +19,6 @@ Here's a walkthrough of implemented user stories:
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-## Notes
-
-My Android Studio took four hours to install, not counting the time it took for my emulator to download, so I was pressed for time when implementing this app. 
-
 ## License
 
     Copyright [yyyy] [name of copyright owner]
