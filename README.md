@@ -4,18 +4,15 @@ SimpleToDo is an android app that allows building a todo list and basic todo ite
 
 Submitted by: Lilia Chang
 
-Time spent: 4 hours spent in total
+Time spent: 3 hours spent in total
 
 ## User Stories
 
 The following **required** functionality is completed:
 
-* [x ] User can **successfully add and remove items** from the todo list
-* [ ] User can **tap a todo item in the list and bring up an edit screen for the todo item** and then have any changes to the text reflected in the todo list.
-*   This feature is buggy-- fails to edit the correct item.
-* [ ] User can **persist todo items** and retrieve them properly on app restart
-*   Unsure of how to test this-- in my gif I closed the app and re-opened it.
-
+* [x] User can **successfully add and remove items** from the todo list
+* [x] User can **tap a todo item in the list and bring up an edit screen for the todo item** and then have any changes to the text reflected in the todo list.
+* [x] User can **persist todo items** and retrieve them properly on app restart
 Here's a walkthrough of implemented user stories:
 
 <img src='http://i.imgur.com/KSETlyE.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
